@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables de colores y temas */
+:root {
+  --primary-color: #1a1a1a;
+  --secondary-color: rgb(190, 190, 190);
+  --accent-color: #e58e09;
+  --text-color: #333;
+  --background-color: #000000; /* Asegúrate de que este valor sea negro */
+  --transition-time: 0.3s;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Playfair Display", serif;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Estilo del carrusel */
+.hero-height {
+  height: 100vh; /* Altura predeterminada */
+}
+
+.hero-carousel {
+  position: relative; /* Contenedor relativo */
+  overflow: hidden;
+}
+
+.hero-carousel img {
+  transition: opacity 1s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Ocupa todo el contenedor */
+  object-fit: cover;
+}
+
+.hero-carousel img:not(:first-child) {
+  opacity: 0;
+}
+
+.hero-carousel img.active {
+  opacity: 1;
+}
+
+.fixed-image-container {
+  position: absolute;
+  top: 80%; /* Centrado vertical */
+  left: 50%; /* Centrado horizontal */
+  transform: translate(-50%, -50%); /* Ajusta la posición para el centro exacto */
+  z-index: 50; /* Prioridad sobre el carrusel */
+  width: 300px; /* Tamaño fijo del contenedor */
+  height: 300px;
+}
+
+.fixed-image {
+  display: block;
+  width: 105%;
+  height: 100%;
+  object-fit: auto; /* Muestra la imagen completa dentro del contenedor */
+}
+
+/* Fondo del carrusel */
+.hero-carousel-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* Oscurece ligeramente el fondo */
+  z-index: 10;
+}

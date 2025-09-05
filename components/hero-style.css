@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Smooch+Sans:wght@100..900&display=swap');
+
+body {
+  font-family: "Smooch Sans", serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hero-carousel {
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+}
+
+.hero-height {
+  height: 100vh;
+}
+
+.carousel-image {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-image.active {
+  opacity: 1;
+}
+
+.carousel-image.first-image {
+  animation: fadeInSlowly 3s ease-in-out;
+}
+
+@keyframes fadeInSlowly {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.hero-carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.527);
+  z-index: 5;
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 80%;
+  text-align: center;
+  color: white;
+}
+
+.hero-text {
+  font-family: "Smooch Sans", serif;
+  font-weight: 400; /* Unificación del peso de la fuente */
+  font-size: 3rem; /* Mantener tamaño de fuente adecuado */
+  color: white;
+  text-transform: uppercase;
+  animation: slideInFromRight 4s ease-in-out;
+}
+
+.hero-subtext {
+  font-family: "Smooch Sans", serif;
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.014);
+  padding: 1.5rem;
+  border-radius: 10px;
+  animation: fadeIn 3.5s ease-in-out 1s forwards;
+  opacity: 0;
+  position: relative;
+  top: 20px; /* Ajuste para mover más abajo */
+}
+
+
+.hero-subtext p {
+  margin-bottom: 0.5rem;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-text {
+    font-size: 2.7rem; /* Ajuste tamaño de fuente para móviles */
+    font-weight: 400; /* Mantener coherencia con la versión para PC */
+    line-height: 0.7; /* Mejor espaciado */
+    letter-spacing: 0.1em; /* Menor separación */
+  }
+
+  .hero-subtext {
+    font-size: 1.2rem; /* Ajuste para pantallas pequeñas */
+    font-weight: 300; /* Coherente con la fuente principal */
+    line-height: 0.9; /* Mejor espaciado */
+    letter-spacing: 0.1em; /* Menor separación */
+  }
+}

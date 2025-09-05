@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap");
+
+.opening-hours-section {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  padding: 8rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.opening-hours-section::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(86, 9, 229, 0.1) 0%, rgba(86, 9, 229, 0) 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.opening-hours-title {
+  font-family: "Oswald", sans-serif;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 3rem;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  animation: fadeInDown 1s ease-out;
+}
+
+.opening-hours-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--accent-color);
+}
+
+.hours-container {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(86, 9, 229, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(86, 9, 229, 0.356);
+  transition: all 0.3s ease;
+  animation: fadeIn 1s ease-out 0.5s both;
+}
+
+.hours-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(86, 9, 229, 0.3);
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  animation: slideInLeft 0.5s ease-out both;
+}
+
+.hours-row:nth-child(1) {
+  animation-delay: 0.7s;
+}
+.hours-row:nth-child(2) {
+  animation-delay: 0.9s;
+}
+.hours-row:nth-child(3) {
+  animation-delay: 1.1s;
+}
+
+.hours-row:last-child {
+  border-bottom: none;
+}
+
+.hours-row:hover {
+  background-color: rgba(86, 9, 229, 0.1);
+  transform: scale(1.02);
+}
+
+.days {
+  font-family: "Oswald", sans-serif;
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.time {
+  font-family: "Oswald", sans-serif;
+  color: #ffffff;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.reservation-button {
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.reservation-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--accent-color);
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+
+.reservation-button:hover::before {
+  left: 0;
+}
+
+.reservation-button:hover {
+  color: #000;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .opening-hours-title {
+    font-size: 2rem;
+  }
+
+  .hours-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .time {
+    margin-top: 0.5rem;
+  }
+}
+
