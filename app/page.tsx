@@ -16,7 +16,6 @@ export default function Home() {
     <main className="min-h-screen bg-background text-text">
       <Header />
       <Hero />
-       <Contact />
       <Intro />
       <About />
       <Promo/>
@@ -24,7 +23,7 @@ export default function Home() {
       <OpeningHours />
       <Services />
       <Gallery />
-     
+     <Contact />
       <Footer />
       <WhatsAppButton phoneNumber="573103395588" />
     </main>
