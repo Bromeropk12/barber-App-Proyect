@@ -10,27 +10,33 @@
   --secondary-color: rgb(190, 190, 190);
   --accent-color: #e58e09;
   --text-color: #333;
-  --background-color: #000000; /* Asegúrate de que este valor sea negro */
+  --background-color: #000000;
   --transition-time: 0.3s;
 }
 
-body {
-  font-family: "Roboto", sans-serif;
-  line-height: 1.6;
-  color: var(--text-color);
-  background-color: var(--background-color);
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Roboto", sans-serif;
+    line-height: 1.6;
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Playfair Display", serif;
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair Display", serif;
+  }
 }
 
-/* Animaciones */
+/* Animaciones optimizadas */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -46,21 +52,15 @@ h6 {
 
 /* Estilo del carrusel */
 .hero-height {
-  height: 100vh; /* Altura predeterminada */
+  height: 100vh;
 }
 
 .hero-carousel {
-  position: relative; /* Contenedor relativo */
-  overflow: hidden;
+  @apply relative overflow-hidden;
 }
 
 .hero-carousel img {
-  transition: opacity 1s ease-in-out;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; /* Ocupa todo el contenedor */
+  @apply transition-opacity duration-1000 absolute top-0 left-0 w-full h-full;
   object-fit: cover;
 }
 
@@ -73,26 +73,18 @@ h6 {
 }
 
 .fixed-image-container {
-  position: absolute;
-  top: 80%; /* Centrado vertical */
-  left: 50%; /* Centrado horizontal */
-  transform: translate(-50%, -50%); /* Ajusta la posición para el centro exacto */
-  z-index: 50; /* Prioridad sobre el carrusel */
-  width: 300px; /* Tamaño fijo del contenedor */
+  @apply absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50;
+  top: 80%;
+  width: 300px;
   height: 300px;
 }
 
 .fixed-image {
-  display: block;
-  width: 105%;
-  height: 100%;
-  object-fit: auto; /* Muestra la imagen completa dentro del contenedor */
+  @apply block w-full h-full;
+  object-fit: contain;
 }
 
 /* Fondo del carrusel */
 .hero-carousel-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4); /* Oscurece ligeramente el fondo */
-  z-index: 10;
+  @apply absolute inset-0 bg-black/40 z-10;
 }

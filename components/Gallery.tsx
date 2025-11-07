@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, Camera } from "lucide-react"
+import { CAROUSEL_INTERVAL, BLUR_PLACEHOLDER } from "@/lib/constants"
 import "./gallery-comp.css"
 
 const galleryImages = [
@@ -61,7 +62,7 @@ export default function Gallery() {
   }
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 5000)
+    const timer = setInterval(nextSlide, CAROUSEL_INTERVAL)
     return () => clearInterval(timer)
   }, [nextSlide])
 
@@ -80,9 +81,11 @@ export default function Gallery() {
               <div key={index} className={`gallery-slide ${index === currentIndex ? "active" : ""}`}>
                 <div className="image-overlay"></div>
                 <Image
-                  src={src || "/placeholder.svg"}
+                  src={src}
                   alt={`Gallery image ${index + 1}`}
                   fill
+                  placeholder="blur"
+                  blurDataURL={BLUR_PLACEHOLDER}
                   style={{ objectFit: "cover" }}
                   className="rounded-lg"
                 />

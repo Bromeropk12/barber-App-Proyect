@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { MessageCircle } from "lucide-react"
 import "./WhatsAppButton.css"
 
 interface WhatsAppButtonProps {
@@ -28,8 +29,18 @@ export default function WhatsAppButton({
 
   const handleClick = () => {
     const encodedMessage = encodeURIComponent(message)
-    window.open(`https://wa.me/${+573103395588}?text=${encodedMessage}`, "_blank")
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank")
   }
+
+  return (
+    <button
+      className={`whatsapp-button ${isVisible ? "visible" : "hidden"}`}
+      onClick={handleClick}
+      aria-label="Contact via WhatsApp"
+    >
+      <MessageCircle className="whatsapp-icon" />
+    </button>
+  )
 
   return (
     <button

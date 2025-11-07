@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export', // Habilita la exportación estática
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },

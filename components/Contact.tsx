@@ -1,26 +1,39 @@
 "use client"
 
 import { useState } from "react"
-import { MessageSquarePlus, Send, CheckCircle, X } from "lucide-react"
+import { MessageSquarePlus, Send, CheckCircle, X, Loader2 } from "lucide-react"
 import "./Contact.css"
 
 export default function Contact() {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [message, setMessage] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!message.trim()) {
+      setError("Por favor, escribe un mensaje.")
+      return
+    }
+
+    setIsSubmitting(true)
+    setError(null)
+
     try {
-      // Add your submission logic here
-      console.log("Feedback submitted:", message)
+      // Simulate API call - replace with actual submission logic
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
       setMessage("")
       setIsPopupOpen(false)
       setShowConfirmation(true)
       // Auto-hide confirmation after 5 seconds
       setTimeout(() => setShowConfirmation(false), 5000)
     } catch (error) {
-      console.error("Error submitting feedback:", error)
+      setError("Error al enviar el mensaje. Inténtalo de nuevo.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -63,10 +76,20 @@ export default function Contact() {
                 placeholder="Escribe tu mensaje aquí..."
                 required
                 className="feedback-textarea"
+                disabled={isSubmitting}
               />
-              <button type="submit" className="submit-button">
-                <Send className="submit-icon" />
-                <span>Enviar</span>
+              {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={isSubmitting || !message.trim()}
+              >
+                {isSubmitting ? (
+                  <Loader2 className="submit-icon animate-spin" />
+                ) : (
+                  <Send className="submit-icon" />
+                )}
+                <span>{isSubmitting ? "Enviando..." : "Enviar"}</span>
               </button>
             </form>
             <button className="close-button" onClick={() => setIsPopupOpen(false)} type="button" aria-label="Cerrar">

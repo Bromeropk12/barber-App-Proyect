@@ -3,6 +3,7 @@ import { Lora } from "next/font/google"
 import "./globals.css"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
+import ErrorBoundary from "@/components/ErrorBoundary"
 
 const lora = Lora({ subsets: ["latin"] })
 
@@ -20,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={lora.className}>
-        {children}
-        <SpeedInsights /> 
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>

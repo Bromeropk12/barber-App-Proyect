@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { CAROUSEL_INTERVAL, BLUR_PLACEHOLDER } from "@/lib/constants"
 import styles from "./About.module.css"
 
 const miembrosEquipo = [
@@ -45,7 +46,7 @@ export default function About() {
   }, [indiceActual, cambiarSlide])
 
   useEffect(() => {
-    const temporizador = setInterval(manejarSiguiente, 6000)
+    const temporizador = setInterval(manejarSiguiente, CAROUSEL_INTERVAL)
     return () => clearInterval(temporizador)
   }, [manejarSiguiente])
 
@@ -78,11 +79,12 @@ export default function About() {
                 >
                   <div className={styles.memberImageContainer} style={{ backgroundImage: `url(${miembro.image})` }}>
                     <Image
-                      src={miembro.image || "/placeholder.svg"}
+                      src={miembro.image}
                       alt={miembro.name}
                       fill
-
-                      style={{ objectFit: 'cover' }} 
+                      placeholder="blur"
+                      blurDataURL={BLUR_PLACEHOLDER}
+                      style={{ objectFit: 'cover' }}
                       className={styles.memberImage}
                     />
                     <div className={styles.imageOverlay}></div>

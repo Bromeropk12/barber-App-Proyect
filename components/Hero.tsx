@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import Image from "next/image"
+import { CAROUSEL_INTERVAL, BLUR_PLACEHOLDER } from "@/lib/constants"
 import "./hero-style.css"
 
 const images = [
@@ -20,7 +21,7 @@ function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }, 5000)
+    }, CAROUSEL_INTERVAL)
 
     return () => clearInterval(interval)
   }, [])
@@ -30,10 +31,12 @@ function HeroSection() {
       {images.map((src, index) => (
         <Image
           key={src}
-          src={src || "/placeholder.svg"}
+          src={src}
           alt={`Hero image ${index + 1}`}
           fill
-          style={{ objectFit: 'cover' }} 
+          placeholder="blur"
+          blurDataURL={BLUR_PLACEHOLDER}
+          style={{ objectFit: 'cover' }}
           className={`carousel-image ${index === currentImageIndex ? "active" : ""} ${
             index === 0 && currentImageIndex === 0 ? "first-image" : ""
           }`}
