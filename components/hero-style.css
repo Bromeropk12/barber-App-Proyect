@@ -116,6 +116,97 @@ body {
   }
 }
 
+/* Botones del Hero */
+.hero-buttons {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeIn 3.5s ease-in-out 2s forwards;
+  opacity: 0;
+  position: relative;
+  top: 20px;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  font-family: "Smooch Sans", serif;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  min-width: 180px;
+  justify-content: center;
+}
+
+.hero-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.hero-button:hover::before {
+  left: 100%;
+}
+
+.hero-button-primary {
+  background: linear-gradient(135deg,
+    rgba(229, 142, 9, 0.9) 0%,
+    rgba(229, 142, 9, 0.7) 100%);
+  color: white;
+  box-shadow: 0 8px 32px rgba(229, 142, 9, 0.3);
+}
+
+.hero-button-primary:hover {
+  background: linear-gradient(135deg,
+    rgba(229, 142, 9, 1) 0%,
+    rgba(229, 142, 9, 0.8) 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(229, 142, 9, 0.4);
+}
+
+.hero-button-secondary {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%);
+  color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hero-button-secondary:hover {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.1) 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.hero-button-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.hero-button:hover .hero-button-icon {
+  transform: scale(1.1);
+}
+
 @media (max-width: 768px) {
   .hero-text {
     font-size: 2.7rem; /* Ajuste tamaño de fuente para móviles */
@@ -129,5 +220,31 @@ body {
     font-weight: 300; /* Coherente con la fuente principal */
     line-height: 0.9; /* Mejor espaciado */
     letter-spacing: 0.1em; /* Menor separación */
+  }
+
+  .hero-buttons {
+    margin-top: 2rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-button {
+    width: 100%;
+    max-width: 280px;
+    padding: 1.2rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-buttons {
+    gap: 0.75rem;
+  }
+  
+  .hero-button {
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    min-width: 160px;
   }
 }

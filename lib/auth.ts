@@ -14,7 +14,7 @@ export interface AuthUser extends User {
     experience_years?: number
     work_shift?: string
     barber_status?: string
-  }
+  } | null
 }
 
 // Función para determinar rol basado en contraseña especial
@@ -110,31 +110,65 @@ export async function signOut() {
   }
 }
 
-// Obtener usuario actual con perfil
+// Obtener usuario actual con perfil (versión robusta)
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
     const { data: { user }, error } = await supabase.auth.getUser()
 
     if (error || !user) return null
 
-    // Obtener perfil del usuario
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single()
+    // Intentar obtener el perfil del usuario
+    try {
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single()
 
-    if (profileError) {
-      console.error('Error obteniendo perfil:', profileError)
-      return user as AuthUser
+      // Manejar errores de perfil de manera silenciosa
+      if (profileError) {
+        // Errores comunes que deben manejarse sin mostrar en consola
+        const shouldLogError = (
+          profileError.code !== 'PGRST116' && // No data found
+          profileError.message !== 'No rows found' &&
+          !profileError.message?.includes('relation "public.profiles" does not exist') &&
+          !profileError.message?.includes('permission denied')
+        )
+
+        if (shouldLogError) {
+          console.warn('Error obteniendo perfil del usuario:', {
+            userId: user.id,
+            error: profileError.message,
+            code: profileError.code
+          })
+        }
+
+        return {
+          ...user,
+          profile: null
+        } as AuthUser
+      }
+
+      return {
+        ...user,
+        profile
+      } as AuthUser
+    } catch (profileError: any) {
+      // Error de red u otros errores externos
+      console.warn('Error de conexión obteniendo perfil del usuario:', {
+        userId: user.id,
+        error: profileError?.message || 'Unknown error'
+      })
+
+      return {
+        ...user,
+        profile: null
+      } as AuthUser
     }
-
-    return {
-      ...user,
-      profile
-    } as AuthUser
-  } catch (error) {
-    console.error('Error obteniendo usuario actual:', error)
+  } catch (error: any) {
+    console.warn('Error obteniendo usuario actual:', {
+      error: error?.message || 'Unknown error'
+    })
     return null
   }
 }
@@ -143,32 +177,50 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
 export async function getCurrentSession(): Promise<Session | null> {
   try {
     const { data: { session }, error } = await supabase.auth.getSession()
-    if (error) throw error
+    if (error) {
+      console.warn('Error obteniendo sesión:', error.message)
+      return null
+    }
     return session
-  } catch (error) {
-    console.error('Error obteniendo sesión:', error)
+  } catch (error: any) {
+    console.warn('Error en sesión:', error?.message || 'Unknown error')
     return null
   }
 }
 
 // Verificar si usuario está autenticado
 export async function isAuthenticated(): Promise<boolean> {
-  const session = await getCurrentSession()
-  return !!session
+  try {
+    const session = await getCurrentSession()
+    return !!session
+  } catch (error: any) {
+    console.warn('Error verificando autenticación:', error?.message || 'Unknown error')
+    return false
+  }
 }
 
 // Verificar rol del usuario
 export async function hasRole(requiredRole: 'cliente' | 'barbero' | 'super_admin'): Promise<boolean> {
-  const user = await getCurrentUser()
-  if (!user?.profile) return false
+  try {
+    const user = await getCurrentUser()
+    
+    // Si no hay usuario o no tiene perfil, verificar si puede ser cliente
+    if (!user || !user.profile) {
+      // Permitir acceso si se requiere rol 'cliente' para usuarios no verificados
+      return requiredRole === 'cliente'
+    }
 
-  const roleHierarchy = {
-    cliente: 1,
-    barbero: 2,
-    super_admin: 3
+    const roleHierarchy = {
+      cliente: 1,
+      barbero: 2,
+      super_admin: 3
+    }
+
+    return roleHierarchy[user.profile.role] >= roleHierarchy[requiredRole]
+  } catch (error: any) {
+    console.warn('Error verificando rol:', error?.message || 'Unknown error')
+    return false
   }
-
-  return roleHierarchy[user.profile.role] >= roleHierarchy[requiredRole]
 }
 
 // Resetear contraseña

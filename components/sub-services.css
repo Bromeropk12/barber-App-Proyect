@@ -2,7 +2,23 @@
 
 .services-container {
   background: linear-gradient(to bottom, #000000, #1a1a1a);
-  margin-top: 30px; /* Ajusta este valor según sea necesario */
+  margin-top: 0;
+  padding-top: 5rem; /* Aumentado para mayor separación del header */
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .services-container {
+    padding-top: 7rem; /* Mayor separación en tablets */
+    padding-bottom: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-container {
+    padding-top: 8rem; /* Mayor separación en desktop */
+    padding-bottom: 5rem;
+  }
 }
 
 .service-title {

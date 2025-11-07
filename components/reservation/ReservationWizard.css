@@ -1,0 +1,552 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Smooch+Sans:wght@100..900&display=swap');
+
+/* Variables CSS consistentes con el proyecto */
+:root {
+  --primary-gradient: linear-gradient(135deg, rgba(229, 142, 9, 0.9) 0%, rgba(229, 142, 9, 0.7) 100%);
+  --primary-gradient-hover: linear-gradient(135deg, rgba(229, 142, 9, 1) 0%, rgba(229, 142, 9, 0.8) 100%);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-white: #ffffff;
+  --text-gray: #9ca3af;
+  --text-gray-light: #d1d5db;
+  --shadow-primary: 0 8px 32px rgba(229, 142, 9, 0.3);
+  --shadow-primary-hover: 0 12px 40px rgba(229, 142, 9, 0.4);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedor principal del wizard */
+.reservation-wizard {
+  min-height: 100vh;
+  background: linear-gradient(135deg,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(17, 17, 17, 0.95) 50%,
+    rgba(0, 0, 0, 0.9) 100%);
+  position: relative;
+  overflow-x: hidden;
+  padding-top: 0.625rem; /* 10px de espacio para separar del header */
+}
+
+/* Efecto de partículas en el fondo */
+.reservation-wizard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(229, 142, 9, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(229, 142, 9, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Contenedor de contenido */
+.reservation-container {
+  position: relative;
+  z-index: 10;
+  padding: 2rem 1rem;
+}
+
+/* Header del wizard */
+.wizard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s ease-out;
+  margin-top: 1.5rem !important; /* Espaciado adicional para separar del header */
+}
+
+.wizard-title {
+  font-family: "Smooch Sans", serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(229, 142, 9, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.wizard-subtitle {
+  font-family: "Smooch Sans", serif;
+  font-size: 1.1rem;
+  color: var(--text-gray-light);
+  font-weight: 300;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Tarjeta principal del wizard */
+.wizard-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-glass);
+  position: relative;
+  overflow: hidden;
+  animation: slideInUp 0.6s ease-out;
+}
+
+.wizard-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-gradient);
+  transition: left 0.6s ease;
+}
+
+.wizard-card:hover::before {
+  left: 0;
+}
+
+/* Progress Bar */
+.wizard-progress {
+  margin-bottom: 3rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid var(--glass-border);
+}
+
+.progress-steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.step-circle {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  border: 2px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-gray);
+}
+
+.step-circle.completed {
+  background: var(--primary-gradient);
+  color: white;
+  border-color: rgba(229, 142, 9, 0.5);
+  box-shadow: 0 0 20px rgba(229, 142, 9, 0.3);
+}
+
+.step-circle.active {
+  background: rgba(229, 142, 9, 0.2);
+  color: rgba(229, 142, 9, 1);
+  border-color: rgba(229, 142, 9, 0.6);
+  box-shadow: 0 0 15px rgba(229, 142, 9, 0.2);
+}
+
+.step-label {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  color: var(--text-gray);
+  transition: color 0.3s ease;
+}
+
+.step-label.active {
+  color: rgba(229, 142, 9, 1);
+  font-weight: 600;
+}
+
+.step-label.completed {
+  color: var(--text-white);
+  font-weight: 600;
+}
+
+.progress-line {
+  position: absolute;
+  top: 1.5rem;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+.progress-line-fill {
+  height: 100%;
+  background: var(--primary-gradient);
+  width: 0%;
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.progress-line-fill::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  background: rgba(229, 142, 9, 1);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(229, 142, 9, 0.5);
+}
+
+/* Contenido del paso */
+.step-content {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.step-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.step-title {
+  font-family: "Smooch Sans", serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+}
+
+.step-description {
+  color: var(--text-gray-light);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Cards de selección */
+.selection-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 15px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.selection-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.selection-card:hover::before {
+  left: 100%;
+}
+
+.selection-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-primary);
+  border-color: rgba(229, 142, 9, 0.3);
+}
+
+.selection-card.selected {
+  background: rgba(229, 142, 9, 0.1);
+  border-color: rgba(229, 142, 9, 0.5);
+  box-shadow: var(--shadow-primary);
+}
+
+.selection-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Botones del wizard */
+.wizard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.wizard-button {
+  font-family: "Smooch Sans", serif;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.875rem 2rem;
+  border-radius: 50px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.wizard-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.wizard-button:hover::before {
+  left: 100%;
+}
+
+.wizard-button-primary {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: var(--shadow-primary);
+}
+
+.wizard-button-primary:hover {
+  background: var(--primary-gradient-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-primary-hover);
+}
+
+.wizard-button-secondary {
+  background: var(--glass-bg);
+  color: var(--text-white);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(10px);
+}
+
+.wizard-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.wizard-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.wizard-button:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Estados de carga */
+.wizard-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid rgba(229, 142, 9, 0.3);
+  border-top: 3px solid rgba(229, 142, 9, 1);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Error states */
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Success states */
+.success-message {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .reservation-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .wizard-card {
+    padding: 1.5rem 1rem;
+    margin: 0 0.5rem;
+  }
+
+  .wizard-title {
+    font-size: 2rem;
+  }
+
+  .wizard-subtitle {
+    font-size: 1rem;
+  }
+
+  .step-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.9rem;
+  }
+
+  .step-label {
+    font-size: 0.75rem;
+  }
+
+  .selection-card {
+    padding: 1rem;
+  }
+
+  .wizard-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wizard-button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wizard-title {
+    font-size: 1.75rem;
+  }
+
+  .step-title {
+    font-size: 1.5rem;
+  }
+
+  .wizard-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .progress-steps {
+    gap: 0.5rem;
+  }
+
+  .step-circle {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.8rem;
+  }
+
+  .step-label {
+    font-size: 0.7rem;
+  }
+}
+
+/* Personalización para campos de input */
+.wizard-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: var(--text-white);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.wizard-input:focus {
+  outline: none;
+  border-color: rgba(229, 142, 9, 0.5);
+  box-shadow: 0 0 0 2px rgba(229, 142, 9, 0.2);
+}
+
+.wizard-input::placeholder {
+  color: var(--text-gray);
+}
+
+/* Grid para servicios y barberos */
+.services-grid,
+.barbers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .services-grid,
+  .barbers-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
