@@ -2,9 +2,11 @@
 
 import { useState } from "react"
 import { MessageSquarePlus, Send, CheckCircle, X, Loader2 } from "lucide-react"
+import { useContent } from "@/contexts/ContentContext"
 import "./Contact.css"
 
 export default function Contact() {
+  const { content } = useContent()
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [message, setMessage] = useState("")
@@ -40,13 +42,13 @@ export default function Contact() {
   return (
     <section id="contact" className="contact-section py-20 px-4">
       <div className="max-w-4xl mx-auto">
-        <h2 className="contact-title text-4xl md:text-5xl font-bold mb-12 text-center">CONTÁCTANOS</h2>
+        <h2 className="contact-title text-4xl md:text-5xl font-bold mb-12 text-center">{content.contact.title}</h2>
         <p className="text-center mb-8 text-white">
-          Visítanos en Brooklyn, NY en 1675 79th St, o déjanos tu opinión sobre nuestra página web.
+          {content.contact.description}
         </p>
         <div className="map-container mb-12">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.7471547492633!2d-73.99887518459578!3d40.61340707934112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2444a812fd823%3A0x4bbdfe04cc4ad5c2!2s1675%2079th%20St%2C%20Brooklyn%2C%20NY%2011214%2C%20USA!5e0!3m2!1sen!2sdo!4v1599299403226!5m2!1sen!2sdo"
+            src={content.contact.mapUrl}
             width="100%"
             height="400"
             frameBorder="0"

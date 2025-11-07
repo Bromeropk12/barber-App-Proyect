@@ -33,12 +33,19 @@ export default function Header() {
   }, [])
 
   const navItems = [
-    { href: "/#Header", text: "Inicio" },
-    { href: "/#about", text: "Sobre Nosotros" },
-    { href: "/#services", text: "Servicios" },
-    { href: "/#gallery", text: "Galería" },
-    { href: "/#contact", text: "Contacto" },
+    { href: "/", text: "Inicio" },
+    { href: "/about", text: "Sobre Nosotros" },
+    { href: "/services", text: "Servicios" },
+    { href: "/gallery", text: "Galería" },
+    { href: "/contact", text: "Contacto" },
   ]
+
+  const handleNavClick = (href: string) => {
+    if (href === "/") {
+      // Para la página principal, hacer scroll suave al inicio
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   return (
     <header
@@ -60,12 +67,17 @@ export default function Header() {
 
         <div className="nav-container">
           <nav className={`desktop-nav ${isScrolled ? "scrolled" : ""}`}>
-            {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="nav-link">
-                {item.text}
-              </Link>
-            ))}
-          </nav>
+             {navItems.map((item) => (
+               <Link
+                 key={item.href}
+                 href={item.href}
+                 className="nav-link"
+                 onClick={() => handleNavClick(item.href)}
+               >
+                 {item.text}
+               </Link>
+             ))}
+           </nav>
         </div>
 
         <button className={`menu-toggle ${isMenuOpen ? "open" : ""}`} onClick={toggleMenu} aria-label="Toggle menu">

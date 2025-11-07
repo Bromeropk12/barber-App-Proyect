@@ -4,24 +4,11 @@ import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, Camera } from "lucide-react"
 import { CAROUSEL_INTERVAL, BLUR_PLACEHOLDER } from "@/lib/constants"
+import { useContent } from "@/contexts/ContentContext"
 import "./gallery-comp.css"
 
-const galleryImages = [
-  "/ASSETS/material/gallery1.jpg",
-  "/ASSETS/material/gallery2.jpg",
-  "/ASSETS/material/gallery3.jpg",
-  "/ASSETS/material/gallery4.jpg",
-  "/ASSETS/material/gallery5.jpg",
-  "/ASSETS/material/gallery6.jpg",
-  "/ASSETS/material/gallery7.jpg",
-  "/ASSETS/material/gallery8.jpg",
-  "/ASSETS/material/gallery9.jpg",
-  "/ASSETS/material/gallery10.jpg",
-  "/ASSETS/material/gallery11.jpg",
-  "/ASSETS/material/gallery12.jpg",
-]
-
 export default function Gallery() {
+  const { content } = useContent()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
@@ -30,18 +17,18 @@ export default function Gallery() {
   const nextSlide = useCallback(() => {
     if (!isTransitioning) {
       setIsTransitioning(true)
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % galleryImages.length)
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % content.gallery.images.length)
       setTimeout(() => setIsTransitioning(false), 500)
     }
-  }, [isTransitioning])
+  }, [isTransitioning, content.gallery.images.length])
 
   const prevSlide = useCallback(() => {
     if (!isTransitioning) {
       setIsTransitioning(true)
-      setCurrentIndex((prevIndex) => (prevIndex - 1 + galleryImages.length) % galleryImages.length)
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + content.gallery.images.length) % content.gallery.images.length)
       setTimeout(() => setIsTransitioning(false), 500)
     }
-  }, [isTransitioning])
+  }, [isTransitioning, content.gallery.images.length])
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX)
@@ -69,7 +56,7 @@ export default function Gallery() {
   return (
     <section id="gallery" className="gallery-section py-20 px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="gallery-title text-4xl md:text-5xl font-bold mb-12 text-center">NUESTRA GALERÍA</h2>
+        <h2 className="gallery-title text-4xl md:text-5xl font-bold mb-12 text-center">{content.gallery.title}</h2>
         <div
           className="gallery-container"
           onTouchStart={handleTouchStart}
@@ -77,7 +64,7 @@ export default function Gallery() {
           onTouchEnd={handleTouchEnd}
         >
           <div className="gallery-slider" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-            {galleryImages.map((src, index) => (
+            {content.gallery.images.map((src, index) => (
               <div key={index} className={`gallery-slide ${index === currentIndex ? "active" : ""}`}>
                 <div className="image-overlay"></div>
                 <Image
@@ -99,7 +86,7 @@ export default function Gallery() {
             <ChevronRight size={24} />
           </button>
           <div className="gallery-indicators">
-            {galleryImages.map((_, index) => (
+            {content.gallery.images.map((_, index) => (
               <button
                 key={index}
                 className={`indicator ${index === currentIndex ? "active" : ""}`}
@@ -111,7 +98,7 @@ export default function Gallery() {
         </div>
         <div className="gallery-info">
           <Camera className="gallery-icon" />
-          <p className="gallery-description">Explora nuestra colección de estilos y cortes de cabello</p>
+          <p className="gallery-description">{content.gallery.description}</p>
         </div>
       </div>
     </section>

@@ -1,18 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export', // Habilita la exportación estática
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    domains: ['images.unsplash.com'], // Para las imágenes de Unsplash en testimonials
   },
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig
