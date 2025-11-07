@@ -1,3 +1,5 @@
+"use client"
+
 import AuthGuard from '@/components/AuthGuard'
 import ReservationWizard from '@/components/reservation/ReservationWizard'
 import Header from "@/components/Header"
