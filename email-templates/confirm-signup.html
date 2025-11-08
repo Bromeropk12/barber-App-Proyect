@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirma tu registro - Brookings Barber</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 24px;
+            margin: 0;
+            font-weight: bold;
+        }
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #333333;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .content p {
+            color: #666666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+        }
+        .footer {
+            background-color: #f8f8f8;
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer p {
+            color: #888888;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .footer a {
+            color: #d4af37;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media only screen and (max-width: 600px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            .content {
+                padding: 30px 20px;
+            }
+            .content h2 {
+                font-size: 24px;
+            }
+            .button {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://barber-proyect-one.vercel.app/_next/image?url=%2FASSETS%2Fmaterial%2Flogo.png&w=256&q=75" alt="Brookings Barber Logo" class="logo">
+            <h1>Brookings Barber</h1>
+        </div>
+        <div class="content">
+            <h2>¡Confirma tu registro!</h2>
+            <p>Hola,</p>
+            <p>Gracias por registrarte en Brookings Barber. Para completar tu registro y comenzar a disfrutar de nuestros servicios, por favor confirma tu dirección de correo electrónico haciendo clic en el botón de abajo.</p>
+            <a href="{{ .ConfirmationURL }}" class="button">Confirmar mi correo electrónico</a>
+            <p>Si el botón no funciona, puedes copiar y pegar el siguiente enlace en tu navegador:</p>
+            <p style="word-break: break-all; color: #007bff; font-size: 14px;">{{ .ConfirmationURL }}</p>
+            <p>Si no has solicitado este registro, puedes ignorar este mensaje de forma segura.</p>
+        </div>
+        <div class="footer">
+            <p>Este es un mensaje automático, por favor no respondas a este correo.</p>
+            <p>¿Necesitas ayuda? <a href="{{ .SiteURL }}">Visita nuestro sitio web</a></p>
+            <p>&copy; 2024 Brookings Barber. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

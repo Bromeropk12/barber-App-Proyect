@@ -197,6 +197,15 @@ export default function Header() {
                       <Settings size={16} />
                       Mi Panel
                     </Link>
+
+                    <Link
+                      href="/profile/edit"
+                      className="dropdown-item"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <User size={16} />
+                      Editar Perfil
+                    </Link>
                     
                     {user.profile?.role === 'super_admin' && (
                       <Link
@@ -289,6 +298,9 @@ export default function Header() {
                         {user.profile?.full_name || user.email?.split('@')[0] || 'Usuario'}
                       </span>
                       <span className="user-email">{user.email}</span>
+                      {user.profile?.role && (
+                        <span className="user-role-mobile">{user.profile.role}</span>
+                      )}
                     </div>
                   </div>
                   
@@ -301,6 +313,18 @@ export default function Header() {
                     <span className="nav-text">
                       <Settings size={20} />
                       Mi Panel
+                    </span>
+                  </Link>
+
+                  <Link
+                    href="/profile/edit"
+                    className="mobile-nav-link"
+                    onClick={toggleMenu}
+                  >
+                    <span className="nav-decoration"></span>
+                    <span className="nav-text">
+                      <User size={20} />
+                      Editar Perfil
                     </span>
                   </Link>
                   

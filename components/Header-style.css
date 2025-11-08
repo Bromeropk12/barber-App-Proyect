@@ -323,6 +323,16 @@
   white-space: nowrap;
 }
 
+.user-role-mobile {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--accent-color, #e58e09);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 0.25rem;
+}
+
 .mobile-signout {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 1rem;

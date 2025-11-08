@@ -137,7 +137,7 @@ export default function ClientDashboard({ user, profile }: DashboardProps) {
 
       <div className="max-w-7xl mx-auto p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 bg-gray-800">
+          <TabsList className="grid w-full grid-cols-4 bg-gray-800">
             <TabsTrigger value="overview" className="data-[state=active]:bg-accent-color">
               Resumen
             </TabsTrigger>
@@ -146,6 +146,9 @@ export default function ClientDashboard({ user, profile }: DashboardProps) {
             </TabsTrigger>
             <TabsTrigger value="profile" className="data-[state=active]:bg-accent-color">
               Perfil
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="data-[state=active]:bg-accent-color">
+              Configuración
             </TabsTrigger>
           </TabsList>
 
@@ -426,10 +429,95 @@ export default function ClientDashboard({ user, profile }: DashboardProps) {
                   )}
                 </div>
                 <div className="flex justify-end">
-                  <Button variant="outline" className="text-white border-gray-600 hover:bg-gray-700">
+                  <Button
+                    onClick={() => router.push('/profile/edit')}
+                    variant="outline"
+                    className="text-white border-gray-600 hover:bg-gray-700"
+                  >
                     <Settings className="h-4 w-4 mr-2" />
                     Editar Perfil
                   </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Settings Tab */}
+          <TabsContent value="settings" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Cuenta y Seguridad</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Gestiona la configuración de tu cuenta
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button
+                    onClick={() => router.push('/profile/edit')}
+                    className="w-full bg-accent-color hover:bg-accent-color/90"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Editar Perfil
+                  </Button>
+
+                  <Button
+                    onClick={() => router.push('/auth/forgot-password')}
+                    variant="outline"
+                    className="w-full text-white border-gray-600 hover:bg-gray-700"
+                  >
+                    Cambiar Contraseña
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Preferencias</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Configura tus preferencias de la aplicación
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white font-medium">Notificaciones</p>
+                      <p className="text-gray-400 text-sm">Recibe actualizaciones sobre tus reservas</p>
+                    </div>
+                    <Button variant="outline" size="sm" className="text-white border-gray-600">
+                      Configurar
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white font-medium">Idioma</p>
+                      <p className="text-gray-400 text-sm">Idioma de la aplicación</p>
+                    </div>
+                    <span className="text-accent-color">Español</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white">Información del Sistema</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-400">Rol:</span>
+                    <p className="text-white font-medium capitalize">{profile.role}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Estado:</span>
+                    <p className="text-green-400 font-medium">Activo</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Última conexión:</span>
+                    <p className="text-white font-medium">Ahora</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
