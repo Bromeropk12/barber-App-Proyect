@@ -19,10 +19,18 @@ export interface AuthUser extends User {
 
 // Función para determinar rol basado en contraseña especial
 export function getRoleFromPassword(password: string): 'cliente' | 'barbero' | 'super_admin' {
-  if (password === process.env.NEXT_PASS_ADMISN) {
+  console.log('Determinando rol desde contraseña:', {
+    password,
+    adminPass: 'soloadmins123',
+    barberPass: 'solobarbers123',
+    isAdmin: password === 'soloadmins123',
+    isBarber: password === 'solobarbers123'
+  })
+
+  if (password === 'soloadmins123') {
     return 'super_admin'
   }
-  if (password === process.env.NEXT_PASS_BARBERS) {
+  if (password === 'solobarbers123') {
     return 'barbero'
   }
   return 'cliente'
@@ -33,7 +41,8 @@ export async function signUp(
   email: string,
   password: string,
   fullName: string,
-  phone?: string
+  phone?: string,
+  specialPassword?: string
 ) {
   try {
     // Verificar si email ya existe
@@ -54,17 +63,28 @@ export async function signUp(
       }
     }
 
-    const role = getRoleFromPassword(password)
+    // Determinar rol basado en contraseña especial (si se proporciona)
+    const role = specialPassword ? getRoleFromPassword(specialPassword) : 'cliente'
+
+    console.log('Registrando usuario en Supabase:', {
+      email,
+      role,
+      passwordLength: password.length,
+      fullName,
+      phone,
+      hasSpecialPassword: !!specialPassword
+    })
 
     const { data, error } = await supabase.auth.signUp({
       email,
-      password,
+      password, // Contraseña personal del usuario
       options: {
         data: {
           full_name: fullName,
           phone: phone || '',
-          admin_password: role === 'super_admin' ? process.env.NEXT_PASS_ADMISN : null,
-          barber_password: role === 'barbero' ? process.env.NEXT_PASS_BARBERS : null,
+          role: role, // Rol determinado por contraseña especial
+          admin_password: role === 'super_admin' ? 'soloadmins123' : null,
+          barber_password: role === 'barbero' ? 'solobarbers123' : null,
         }
       }
     })

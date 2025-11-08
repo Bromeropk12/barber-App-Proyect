@@ -40,7 +40,7 @@ export default function ContactPage() {
       <Testimonials />
       <OpeningHours />
       <Gallery />
-      <Contact />
+     <Contact />
       <Footer />
       <WhatsAppButton phoneNumber={contentManager.getContent().business.phone} />
     </main>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useContent } from "@/contexts/ContentContext"
-import { BarberShopData, AdminCredentials } from "@/types/content"
+import { BarberShopData } from "@/types/content"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -12,17 +12,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Trash2, Save, Download, Upload } from "lucide-react"
-
-const ADMIN_CREDENTIALS: AdminCredentials = {
-  username: "admin",
-  password: "brookings2025"
-}
+import { isAuthenticated, hasRole, getCurrentUser } from "@/lib/auth"
+import { AuthUser } from "@/lib/auth"
 
 export default function AdminPage() {
   const { content, updateContent } = useContent()
   const router = useRouter()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [credentials, setCredentials] = useState({ username: "", password: "" })
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false)
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [editedContent, setEditedContent] = useState<BarberShopData>(content)
   const [hasChanges, setHasChanges] = useState(false)
 
@@ -30,15 +29,34 @@ export default function AdminPage() {
     setEditedContent(content)
   }, [content])
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (credentials.username === ADMIN_CREDENTIALS.username &&
-        credentials.password === ADMIN_CREDENTIALS.password) {
-      setIsAuthenticated(true)
-    } else {
-      alert("Credenciales incorrectas")
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const authenticated = await isAuthenticated()
+        const hasSuperAdminRole = await hasRole('super_admin')
+        const currentUser = await getCurrentUser()
+
+        setIsUserAuthenticated(authenticated)
+        setIsSuperAdmin(hasSuperAdminRole)
+        setUser(currentUser)
+      } catch (error) {
+        console.warn('Error verificando autenticación:', error)
+        setIsUserAuthenticated(false)
+        setIsSuperAdmin(false)
+      } finally {
+        setLoading(false)
+      }
     }
-  }
+
+    checkAuth()
+  }, [])
+
+  // Redirigir si no está autenticado o no es super_admin
+  useEffect(() => {
+    if (!loading && (!isUserAuthenticated || !isSuperAdmin)) {
+      router.push('/auth/login?redirect=/admin')
+    }
+  }, [loading, isUserAuthenticated, isSuperAdmin, router])
 
   const handleSave = () => {
     updateContent({ section: "hero", data: editedContent.hero })
@@ -80,37 +98,47 @@ export default function AdminPage() {
     }
   }
 
-  if (!isAuthenticated) {
+  // Mostrar loading mientras se verifica la autenticación
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-color"></div>
+              <span className="ml-2">Verificando permisos...</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // Si no está autenticado o no es super_admin, mostrar mensaje de acceso denegado
+  if (!isUserAuthenticated || !isSuperAdmin) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Acceso Administrativo</CardTitle>
+            <CardTitle className="text-red-500">Acceso Denegado</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <Label htmlFor="username">Usuario</Label>
-                <Input
-                  id="username"
-                  type="text"
-                  value={credentials.username}
-                  onChange={(e) => setCredentials({...credentials, username: e.target.value})}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="password">Contraseña</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={credentials.password}
-                  onChange={(e) => setCredentials({...credentials, password: e.target.value})}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full">Ingresar</Button>
-            </form>
+            <div className="space-y-4">
+              <p className="text-gray-400">
+                Solo los usuarios con rol de <strong>super_admin</strong> pueden acceder a esta página.
+              </p>
+              {user?.profile?.role && (
+                <p className="text-sm text-gray-500">
+                  Tu rol actual: <Badge variant="outline">{user.profile.role}</Badge>
+                </p>
+              )}
+              <Button
+                onClick={() => router.push('/auth/login?redirect=/admin')}
+                className="w-full"
+              >
+                Ir al Login
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -121,7 +149,12 @@ export default function AdminPage() {
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Panel de Administración</h1>
+          <div>
+            <h1 className="text-3xl font-bold">Panel de Administración</h1>
+            <p className="text-sm text-gray-400 mt-1">
+              Bienvenido, {user?.profile?.full_name || user?.email} ({user?.profile?.role})
+            </p>
+          </div>
           <div className="flex gap-2">
             <Button onClick={handleExport} variant="outline">
               <Download className="w-4 h-4 mr-2" />

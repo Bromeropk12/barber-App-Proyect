@@ -33,14 +33,14 @@ export default function GalleryPage() {
     <main className="min-h-screen bg-background text-text">
       <Header />
       <Hero />
+      <Services />
       <Intro />
       <About />
       <Promo/>
       <Testimonials />
       <OpeningHours />
-      <Services />
       <Gallery />
-      <Contact />
+     <Contact />
       <Footer />
       <WhatsAppButton phoneNumber={contentManager.getContent().business.phone} />
     </main>
